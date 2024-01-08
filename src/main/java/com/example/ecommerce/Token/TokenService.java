@@ -1,8 +1,13 @@
 package com.example.ecommerce.Token;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
+@RequiredArgsConstructor
 public class TokenService {
     private Map<String, String > emailToTokenMap = new HashMap<>();
 
