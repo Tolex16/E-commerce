@@ -1,5 +1,6 @@
 package com.example.ecommerce.PasswordRequests;
 
+import com.example.ecommerce.Entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ public class ForgotPasswordController {
     private final ForgotPassTokenService forgotPassTokenService;
 
     @PostMapping("/initiate")
-    public ResponseEntity<String> initiateForgotPass(@RequestBody String userEmail){
-        forgotPassTokenService.initiateForgotPass(userEmail);
+    public ResponseEntity<String> initiateForgotPass(@RequestBody UserEntity user){
+        forgotPassTokenService.initiateForgotPass(user);
         return ResponseEntity.ok("Forgot Password sequence initiated. Check your email for instructions.");
     }
 

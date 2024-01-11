@@ -31,12 +31,13 @@ public class ForgotPassServiceImpl implements ForgotPassTokenService{
     private final UserRepository userRepository;
 
     @Override
-    public void initiateForgotPass(String userEmail){
+    public void initiateForgotPass(UserEntity user){
 
         ForgotPassToken forgotPassToken = new ForgotPassToken();
 
         forgotPassToken.setToken(generateOTP());
         forgotPassTokenRep.save(forgotPassToken);
+        emailService.sendPasswordMail(user.getEmail(),user.getUsername(),generateOTP());
     }
 
     @Override
@@ -55,11 +56,10 @@ public class ForgotPassServiceImpl implements ForgotPassTokenService{
     public String generateOTP(){
         List rules = Arrays.asList(new CharacterRule(EnglishCharacterData.UpperCase, 1),
                 new CharacterRule(EnglishCharacterData.LowerCase, 1),
-                new CharacterRule(EnglishCharacterData.Digit, 1),
-                new CharacterRule(EnglishCharacterData.Special,1));
+                new CharacterRule(EnglishCharacterData.Digit, 1));
 
         PasswordGenerator generator = new PasswordGenerator();
-        String password = generator.generatePassword(8,rules);
+        String password = generator.generatePassword(5,rules);
         return password;
     }
 

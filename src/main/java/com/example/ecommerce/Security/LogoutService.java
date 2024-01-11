@@ -1,5 +1,6 @@
 package com.example.ecommerce.Security;
 
+import com.example.ecommerce.Entity.UserEntity;
 import com.example.ecommerce.Service.JwtService;
 import com.example.ecommerce.Token.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,20 +22,20 @@ public class LogoutService implements LogoutHandler {
     @Autowired
     private final TokenService tokenService;
 
-    private final JwtService jwtService;
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
      //   clearSessionAttribute(request.getSession());
         String authHeader = request.getHeader("Authorization");
         final String jwt;
-        String userEmail = null;
 
         if (StringUtils.isEmpty(authHeader) || !StringUtils.startsWith(authHeader,"Bearer ")){
             return;
         }
+        UserEntity user = new UserEntity();
         jwt = authHeader.substring(7);
-        tokenService.storeToken(null, jwt);
+
+        tokenService.storeToken(user.getEmail(), jwt);
         var token = tokenService.getTokenByEmail(jwt);
         if (token != null){
             SecurityContextHolder.clearContext();
